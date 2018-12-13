@@ -24,6 +24,7 @@ public class GUIController {
     private String city1 = "";
     private String city2 = "";
     private boolean radioButtonsDisabled = false;
+    private boolean citiesPicked = false;
     private StringBuilder builder = new StringBuilder();
     private HashMap<String, RadioButton> destinations = new HashMap<>();
     private HashMap<List<String>, List<Rectangle>> routes = new HashMap<>();
@@ -515,12 +516,15 @@ public class GUIController {
         routes.put(new ArrayList<>(Arrays.asList("Wheeling", "Morgantown")), new ArrayList<>(Arrays.asList(WheelingToMorgantown1, WheelingToMorgantown2, WheelingToMorgantown3)));
         routes.put(new ArrayList<>(Arrays.asList("Baltimore", "Cumberland")), new ArrayList<>(Arrays.asList(BaltimoreToCumberland1, BaltimoreToCumberland2, BaltimoreToCumberland3,
                     BaltimoreToCumberland4, BaltimoreToCumberland5, BaltimoreToCumberland5, BaltimoreToCumberland6, BaltimoreToCumberland7)));
+        routes.put(new ArrayList<>(Arrays.asList("Coudersport", "Williamsport")), new ArrayList<>(Arrays.asList(CoudersportToWilliamsport1, CoudersportToWilliamsport2,
+                    CoudersportToWilliamsport3, CoudersportToWilliamsport4)));
 
         player1.addTCCard(new TrainCarCard("PINK"));
         player1.addTCCard(new TrainCarCard("PINK"));
-        player1.addTCCard(new TrainCarCard("RED"));
         player1.addTCCard(new TrainCarCard("GREEN"));
-        player1.addTCCard(new TrainCarCard("BLUE"));
+        player1.addTCCard(new TrainCarCard("GREEN"));
+        player1.addTCCard(new TrainCarCard("GREEN"));
+        player1.addTCCard(new TrainCarCard("GREEN"));
         player1.addTCCard(new TrainCarCard("PINK"));
 
         player2.addTCCard(new TrainCarCard("GREEN"));
@@ -529,6 +533,7 @@ public class GUIController {
         player2.addTCCard(new TrainCarCard("PINK"));
         player2.addTCCard(new TrainCarCard("GREEN"));
         player2.addTCCard(new TrainCarCard("GREEN"));
+        player2.addTCCard(new TrainCarCard("BLUE"));
 
         playerHand.clear();
         builder.setLength(0);
@@ -541,16 +546,17 @@ public class GUIController {
     @FXML
     void buttonPressed(ActionEvent event) {
         Button pressed = (Button)event.getSource();
-        ArrayList route = new ArrayList<>();
-        List<Field> members = new ArrayList<>(Arrays.asList(getClass().getDeclaredFields()));
+        ArrayList cities;
+
         if ( pressed.equals(route) ) {
             if ( gameLogic.isValidMove(currentPlayer, board, city1, city2) ){
-                route = board.getKey(city1, city2);
-                for(int i = 0; i < routes.get(route).size(); i++){
-                    routes.get(route).get(i).setStroke(currentPlayer.getPlayerColor());
+                cities = board.getKey(city1, city2);
+                for(int i = 0; i < routes.get(cities).size(); i++){
+                    routes.get(cities).get(i).setFill(currentPlayer.getPlayerColor());
                 }
 
             } else {
+                System.out.println("ISN'T A VALID MOVE THO.");
                 enableRadioButtons();
             }
             currentPlayer = gameLogic.getCurrentPlayer(currentPlayer, player1, player2);
@@ -601,16 +607,20 @@ public class GUIController {
         RadioButton button = (RadioButton)event.getSource();
 
         if ( city1.isEmpty() || city2.isEmpty() ) {
-            if ( city1.isEmpty() ) {
-               city1 = button.getId();
+            if (city1.isEmpty()) {
+                city1 = button.getId();
             } else {
-               city2 = button.getId();
+                city2 = button.getId();
+                citiesPicked = true;
             }
-        } else {
-            for(String key : destinations.keySet()) {
-                if (!key.equals(city1) ) {
-                    if ( !key.equals(city2) ) {
-                        destinations.get(key).setDisable(true);
+
+            if (citiesPicked) {
+                radioButtonsDisabled = true;
+                for (String key : destinations.keySet()) {
+                    if (!key.equals(city1)) {
+                        if (!key.equals(city2)) {
+                            destinations.get(key).setDisable(true);
+                        }
                     }
                 }
             }
@@ -621,7 +631,11 @@ public class GUIController {
         if( radioButtonsDisabled ) {
             for(String key : destinations.keySet()) {
                     destinations.get(key).setDisable(false);
+                    if ( destinations.get(key).isSelected() ) {
+                        destinations.get(key).setSelected(false);
+                    }
             }
+            radioButtonsDisabled = false;
         }
     }
 

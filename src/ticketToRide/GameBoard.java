@@ -24,7 +24,7 @@ public class GameBoard {
         destinations = new HashMap<>();
 
         destinations.put(new ArrayList<>(Arrays.asList("Erie", "Youngstown")), new Route("GREEN", "YELLOW", 4));
-        destinations.put(new ArrayList<>(Arrays.asList("Coudersport", "williamsport")), new Route("GREEN", 4));
+        destinations.put(new ArrayList<>(Arrays.asList("Coudersport", "Williamsport")), new Route("GREEN", 4));
         destinations.put(new ArrayList<>(Arrays.asList("Erie", "Warren")), new Route("BLUE", 3));
         destinations.put(new ArrayList<>(Arrays.asList("Wheeling", "Pittsburg")), new Route("GREEN", 2));
         destinations.put(new ArrayList<>(Arrays.asList("Pittsburg", "Morgantown")), new Route("YELLOW", 3));
@@ -50,7 +50,7 @@ public class GameBoard {
     public Route getRoute(String city1, String city2) {
         ArrayList cities = getKey(city1, city2);
         Route foundRoute;
-        if (cities == null || cities.isEmpty()) {
+        if (cities == null) {
             foundRoute = null;
         } else {
             foundRoute = new Route(destinations.get(cities).getRouteColor1(), destinations.get(cities).getRouteColor2(), destinations.get(cities).getRouteLength());
