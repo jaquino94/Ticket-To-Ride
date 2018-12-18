@@ -56,6 +56,7 @@ public class Player {
         this.color = color;
         this.score = 0;
         this.tcHand = new ArrayList<TrainCarCard>();
+        this.dcHand = new ArrayList<DestCard>();
     }
     /**
      * Returns hand of train car cards

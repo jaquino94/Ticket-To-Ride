@@ -1,15 +1,10 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.Iterator;
 
 // Vast majority of functionality is going to go here. All rules for turns and all of game setup
 public class GameLogic {
 
-	private final int MAX_SCORE = 15;
-	private final int MIN_CAR_COUNT = 2;
-	private Player player1, player2;
-	private GameBoard board;
 	private Deck discardPile = new Deck();
 	List<TrainCarCard> discards = new ArrayList<>();
 
@@ -30,13 +25,11 @@ public class GameLogic {
 				for (int i = 0; i < player_hand.size(); i++) {
 					if (player_hand.get(i).getColor().equals(route.getRouteColor1())) {
 						color1++;
-						System.out.println(color1);
 						if (color1 == route.getRouteLength()) {
 							return true;
 						}
 					} else if (player_hand.get(i).getColor().equals(route.getRouteColor2())) {
 						color2++;
-						System.out.println(color2);
 						if (color2 == route.getRouteLength()) {
 							return true;
 						}
@@ -76,16 +69,13 @@ public class GameLogic {
     public Player getCurrentPlayer(Player currentPlayer, Player p1, Player p2) {
 	    //Returns the next player that will take a turn
 	    if (currentPlayer == p1) {
-	        currentPlayer = p2;
-        } else {
-	        currentPlayer = p1;
+	        return  p2;
         }
-		return  currentPlayer;
+        return p1;
 	}
 
 	public void addToDiscardPile(Player player, GameBoard routes, String city1, String city2){
 	    Route route = routes.getRoute(city1,city2);
-
 	}
 
 
