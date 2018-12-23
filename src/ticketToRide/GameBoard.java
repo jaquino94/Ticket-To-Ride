@@ -19,23 +19,7 @@ public class GameBoard {
      * fills card decks.
      */
     public GameBoard() {
-        /*
-            Using an array for the keys/destinations since the routes are bi-directional.
-            It's the same route regardless which end you start in.
-         */
-        destinations = new HashMap<>();
-
-        destinations.put(new ArrayList<>(Arrays.asList("Erie", "YoungsTown")), new Route("GREEN", "YELLOW", 4));
-        destinations.put(new ArrayList<>(Arrays.asList("Coudersport", "Williamsport")), new Route("GREEN", 4));
-        destinations.put(new ArrayList<>(Arrays.asList("Erie", "Warren")), new Route("BLUE", 3));
-        destinations.put(new ArrayList<>(Arrays.asList("Wheeling", "Pittsburg")), new Route("GREEN", 2));
-        destinations.put(new ArrayList<>(Arrays.asList("Pittsburg", "MorganTown")), new Route("YELLOW", 3));
-        destinations.put(new ArrayList<>(Arrays.asList("Rochester", "Syracuse")), new Route("BLUE", "PINK", 4));
-        destinations.put(new ArrayList<>(Arrays.asList("Cumberland", "Baltimore")), new Route("BLUE", 7));
-        destinations.put(new ArrayList<>(Arrays.asList("Albany", "NewYork")), new Route("GREEN", "BLUE", 6));
-        destinations.put(new ArrayList<>(Arrays.asList("Lancaster", "Philadelphia")), new Route("GREEN", 4));
-        destinations.put(new ArrayList<>(Arrays.asList("Warren", "Buffalo")), new Route("GREEN", 4));
-        destinations.put(new ArrayList<>(Arrays.asList("Binghamton", "Albany")), new Route("PINK", 6));
+        initDestinations();
 
         // Build decks for game
         tcDeck = new Deck("color.txt", 0);
@@ -89,5 +73,31 @@ public class GameBoard {
      */
     public Card getDCCard() {
         return dcDeck.draw();
+    }
+
+    /*
+        Using an array for the keys/destinations since the routes are bi-directional.
+        It's the same route regardless which end you start in.
+
+        Using a hash map where we use the two cities as the key and its values are:
+                            1) First color of route
+                            2) Second color of route (If Applicable)
+                            3) The route length
+     */
+    private void initDestinations(){
+        destinations = new HashMap<>();
+
+        destinations.put(new ArrayList<>(Arrays.asList("Erie", "YoungsTown")), new Route("GREEN", "YELLOW", 4));
+        destinations.put(new ArrayList<>(Arrays.asList("Coudersport", "Williamsport")), new Route("GREEN", 4));
+        destinations.put(new ArrayList<>(Arrays.asList("Erie", "Warren")), new Route("BLUE", 3));
+        destinations.put(new ArrayList<>(Arrays.asList("Wheeling", "Pittsburg")), new Route("GREEN", 2));
+        destinations.put(new ArrayList<>(Arrays.asList("Pittsburg", "MorganTown")), new Route("YELLOW", 3));
+        destinations.put(new ArrayList<>(Arrays.asList("Rochester", "Syracuse")), new Route("BLUE", "PINK", 4));
+        destinations.put(new ArrayList<>(Arrays.asList("Cumberland", "Baltimore")), new Route("BLUE", 7));
+        destinations.put(new ArrayList<>(Arrays.asList("Albany", "NewYork")), new Route("GREEN", "BLUE", 6));
+        destinations.put(new ArrayList<>(Arrays.asList("Lancaster", "Philadelphia")), new Route("GREEN", 4));
+        destinations.put(new ArrayList<>(Arrays.asList("Warren", "Buffalo")), new Route("GREEN", 4));
+        destinations.put(new ArrayList<>(Arrays.asList("Binghamton", "Albany")), new Route("PINK", 6));
+
     }
 }

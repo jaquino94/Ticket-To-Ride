@@ -18,35 +18,6 @@ public class Player {
     private int score;        // not sure if we want this here.
 
     /**
-     * Constructs and empty player.
-     */
-    public Player() {
-        this.color = "blank";
-        this.playerColor = null;
-        this.score = 0;
-        this.tcHand = new ArrayList<TrainCarCard>();
-    }
-    /**
-     * Constructs a player given a color.
-     * @param color - sets player color.
-     */
-    public Player(String color) {
-        this.color = color;
-        this.playerColor = null;
-        this.score = 0;
-        this.tcHand = new ArrayList<TrainCarCard>();
-    }
-    /**
-     * Constructs a player given a Color object
-     * @param playerColor - Color for player
-     */
-    public Player(Color playerColor) {
-        this.playerColor = playerColor;
-        this.color = "blank";
-        this.score = 0;
-        this.tcHand = new ArrayList<TrainCarCard>();
-    }
-    /**
      * Constructs a player given a Color object, and String color
      * @param playerColor - Color for player
      * @param color - Color for player for UI
@@ -55,8 +26,8 @@ public class Player {
         this.playerColor = playerColor;
         this.color = color;
         this.score = 0;
-        this.tcHand = new ArrayList<TrainCarCard>();
-        this.dcHand = new ArrayList<DestCard>();
+        this.tcHand = new ArrayList<>();
+        this.dcHand = new ArrayList<>();
     }
     /**
      * Returns hand of train car cards
@@ -64,6 +35,13 @@ public class Player {
      */
     public List<TrainCarCard> getTcHand() {
         return tcHand;
+    }
+    /**
+     * Returns hand of destination cards
+     * @returns list of destination cards
+     */
+    public List<DestCard> getDCHand() {
+        return dcHand;
     }
     /**
      * Adds train car card to train car hand

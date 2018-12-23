@@ -6,6 +6,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -466,50 +467,14 @@ public class GUIController {
     private Rectangle ElmiraToTowanda2;
 
     @FXML
-    private ImageView Card1;
-
-    @FXML
-    private ImageView Card2;
-
-    @FXML
-    private ImageView Card3;
-
-    @FXML
-    private ImageView Card4;
-
-    @FXML
-    private ImageView Card5;
-
-    @FXML
-    private ImageView Card6;
-
-    @FXML
-    private ImageView Card7;
-
-    @FXML
-    private ImageView Card8;
-
-    @FXML
-    private ImageView Card9;
-
-    @FXML
-    private ImageView Card10;
+    private HBox trainCardView;
 
     public void initialize(){
-
         initPlayerHand();
         initDestinationButtons();
         initRoutes();
         initTrainCards();
         setTrainCardImages();
-
-        playerHand.clear();
-        builder.setLength(0);
-        for(int i = 0; i < player1.getTcHand().size(); i++) {
-            builder.append(player1.getTcHand().get(i).getColor() + " ");
-        }
-        playerHand.setText(builder.toString());
-        player.setText("Current Player:" + currentPlayer.getColor());
     }
 
     @FXML
@@ -521,8 +486,8 @@ public class GUIController {
                 claimRoute(currentPlayer, city1, city2);
             }
 
-            resetCities();
             enableRadioButtons();
+            resetCities();
 
             currentPlayer = gameLogic.getCurrentPlayer(currentPlayer, player1, player2);
             setTrainCardImages();
@@ -534,6 +499,7 @@ public class GUIController {
         } else {
             if ( pressed.equals(trainCard) ) {
                currentPlayer.addTCCard(board.getTCCard());
+               trainCards.add(new ImageView()); //Adding a new ImageView to show the added Train Card
             } else if ( pressed.equals(destinationCard) ) {
                currentPlayer.addDCCard(board.getDCCard());
             }
@@ -544,44 +510,92 @@ public class GUIController {
         }
     }
 
+    /**
+     * We allow the player to re-choose cities by deselecting and selecting other radio buttons
+     */
     @FXML
     void pressed(ActionEvent event) {
         RadioButton button = (RadioButton)event.getSource();
 
-        if ( (city1.equals("")) || (city2.equals("")) ) {
-            if ( city1.equals("") ) {
-                city1 = button.getId();
+        if (city1.equals("") & city2.equals("") ) {
+            city1 = button.getId();
+            System.out.println("CITY1: " + city1);
+        } else if ( !city1.equals("") && city2.equals("") ) {
+            if ( button.getId().equals(city1) ) {
+                city1 = "";
+                citiesPicked = false;
+                enableRadioButtons();
+                System.out.println("UNCHECKED CITY 1");
             } else {
                 city2 = button.getId();
                 citiesPicked = true;
+                System.out.println("CITY2: " + city2);
             }
-            //Once player has picked two cities, we disable the other buttons
-            if ( citiesPicked ) {
-                radioButtonsDisabled = true;
-                for (String key : destinations.keySet()) {
-                    if ( !key.equals(city1) ) {
-                        if ( !key.equals(city2) ) {
-                            destinations.get(key).setDisable(true);
-                        }
+        } else if ( city1.equals("") && !city2.equals("") ) {
+            if ( button.getId().equals(city2) ) {
+                city2 = "";
+                citiesPicked = false;
+                enableRadioButtons();
+                System.out.println("UNCHECKED CITY 2");
+            } else {
+                city1 = button.getId();
+                citiesPicked = true;
+                System.out.println("CITY1: " + city1);
+            }
+        } else if (!city1.equals("") && !city2.equals("") ) {
+            if ( button.getId().equals(city1) ) {
+                city1 = "";
+                citiesPicked = false;
+                enableRadioButtons();
+                System.out.println("UNCHECKED CITY 1");
+            } else if ( button.getId().equals(city2) ) {
+                city2 = "";
+                citiesPicked = false;
+                enableRadioButtons();
+                System.out.println("UNCHECKED CITY 2");
+            }
+
+        }
+
+        //Once player has picked two cities, we disable the other buttons
+        if ( citiesPicked ) {
+            radioButtonsDisabled = true;
+            for (String key : destinations.keySet()) {
+                if ( !key.equals(city1) ) {
+                    if ( !key.equals(city2) ) {
+                        destinations.get(key).setDisable(true);
                     }
                 }
             }
         }
     }
 
+    /**
+     * Enabling the radio buttons again for the next player to choose cities.
+     */
     private void enableRadioButtons(){
         if ( radioButtonsDisabled ) {
             for(String key : destinations.keySet()) {
                 destinations.get(key).setDisable(false);
 
-                if ( destinations.get(key).isSelected() ) {
-                    destinations.get(key).setSelected(false);
+                //If the player did choose cities for a turn, we reset ALL buttons
+                //But if the player decided to change cities during their turn
+                //We keep the buttons they enabled on.
+                if ( citiesPicked ) {
+                    if (destinations.get(key).isSelected()) {
+                        destinations.get(key).setSelected(false);
+                    }
                 }
             }
             radioButtonsDisabled = false;
         }
     }
 
+    /**
+     * We need to reset the variables that will hold the names of the cities picked.
+     * If we don't do this, city1 and city2 will always hold the previous's players chosen cities.
+     * This will create an error in terms of claiming a route for the next player.
+     */
     private void resetCities(){
         if ( citiesPicked ) {
             city1 = "";
@@ -590,6 +604,14 @@ public class GUIController {
         }
     }
 
+    /**
+     * This is how we will change the color of each Rectangle object of a certain route
+     * to the color of the player's color to show that it has been claimed by that player.
+     *
+     * We do a check if the route has two colors or not.
+     * If it does, we will iterate through player's train card hand and see which color the player has
+     * that matches the length of the route
+     */
     private void claimRoute(Player currentPlayer, String city1, String city2) {
         ArrayList<String> citiesRoute;
         String color;
@@ -638,27 +660,29 @@ public class GUIController {
         //Showing the hand of the current player after the previous player had drawn a card
         playerHand.clear();
         builder.setLength(0);
-        for(int i = 0; i < currentPlayer.getTcHand().size(); i++) {
-            builder.append(currentPlayer.getTcHand().get(i).getColor() + " ");
+        if ( currentPlayer.getDCHand() != null ) {
+            for (int i = 0; i < currentPlayer.getDCHand().size(); i++) {
+                builder.append(currentPlayer.getDCHand().get(i) + " ");
+            }
         }
         playerHand.setText(builder.toString());
         player.setText("Current Player:" + currentPlayer.getColor());
     }
 
+    /**
+     * Initializes the TrainCards list that holds the ImageView to show the player's train car cards
+     */
     private void initTrainCards(){
-        trainCards.add(Card1);
-        trainCards.add(Card2);
-        trainCards.add(Card3);
-        trainCards.add(Card4);
-        trainCards.add(Card5);
-        trainCards.add(Card6);
-        trainCards.add(Card7);
-        trainCards.add(Card8);
-        trainCards.add(Card9);
-        trainCards.add(Card10);
+        for(int i = 0; i < currentPlayer.getTcHand().size(); i++){
+            trainCards.add(new ImageView());
+        }
     }
 
+    /**
+     * Sets each ImageView to have the train car image depending on the player's hand
+     */
     private void setTrainCardImages(){
+        System.out.println(currentPlayer.getTcHand().size());
         for(int i = 0; i < currentPlayer.getTcHand().size(); i++){
             switch (currentPlayer.getTcHand().get(i).getColor()) {
                 case "GREEN":
@@ -686,10 +710,26 @@ public class GUIController {
                     trainCards.get(i).setImage(new Image("View/imgs/WhiteCar.png"));
                     break;
             }
+            //Needed to set height and width because the images become enlarged by default
+            trainCards.get(i).setFitHeight(135);
+            trainCards.get(i).setFitWidth(200);
+        }
+        //Check if HBox has ImageView objects in it.
+        if (  trainCardView.getChildren().isEmpty() ) {
+            trainCardView.getChildren().addAll(trainCards);
+        } else {
+            //We remove all the children node of the HBox and add the ImageView list containing the next player's cards
+            trainCardView.getChildren().clear();
+            trainCardView.getChildren().addAll(trainCards);
         }
     }
 
+    /**
+     * Initializes the player's hand by adding Train car card colors to their hands
+     */
     private void initPlayerHand(){
+        //Hard coding TrainCards for testing purposes
+        //@todo make card colors added for each player more "random"
         player1.addTCCard(new TrainCarCard("YELLOW"));
         player1.addTCCard(new TrainCarCard("YELLOW"));
         player1.addTCCard(new TrainCarCard("GREEN"));
@@ -703,10 +743,15 @@ public class GUIController {
         player2.addTCCard(new TrainCarCard("RED"));
         player2.addTCCard(new TrainCarCard("PINK"));
         player2.addTCCard(new TrainCarCard("GREEN"));
-        player2.addTCCard(new TrainCarCard("GREEN"));
+        player2.addTCCard(new TrainCarCard("BLUE"));
         player2.addTCCard(new TrainCarCard("BLUE"));
     }
 
+    /**
+     * Initializes the destinations hash map which will contain all the radio buttons
+     * and their corresponding destinations.
+     * This will be useful in finding which buttons the player has clicked.
+     */
     private void initDestinationButtons(){
         destinations.put(Warren.getId(), Warren);
         destinations.put(Dubois.getId(), Dubois);
@@ -744,6 +789,11 @@ public class GUIController {
         destinations.put(Binghamton.getId(), Binghamton);
     }
 
+    /**
+     *  Initializes the routes hash map where we use the route between two cities and the color of that route.
+     *  We then use a list to store all the Rectangle objects for that route.
+     *  This is how we will get each Rectangle object for a route to change color to the player's color.
+     */
     private void initRoutes(){
         routes.put(new ArrayList<>(Arrays.asList("Erie","YoungsTown", "YELLOW")), new ArrayList<>(Arrays.asList(ErieToYoungstownYellow1, ErieToYoungstownYellow2,
                 ErieToYoungstownYellow3, ErieToYoungstownYellow4)));
@@ -764,5 +814,6 @@ public class GUIController {
         routes.put(new ArrayList<>(Arrays.asList("Coudersport", "Williamsport")), new ArrayList<>(Arrays.asList(CoudersportToWilliamsport1, CoudersportToWilliamsport2,
                 CoudersportToWilliamsport3, CoudersportToWilliamsport4)));
         routes.put(new ArrayList<>(Arrays.asList("Wheeling", "Pittsburg")), new ArrayList<>(Arrays.asList(WheelingToPittsburg1, WheelingToPittsburg2)));
+        routes.put(new ArrayList<>(Arrays.asList("Pittsburg", "MorganTown")), new ArrayList<>(Arrays.asList(PittsburgToMorgantown1, PittsburgToMorgantown2, PittsburgToMorgantown3)));
     }
 }
