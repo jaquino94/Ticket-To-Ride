@@ -57,6 +57,15 @@ public class Player {
     public void addDCCard(Card card) {
         dcHand.add((DestCard) card);
     }
+
+    /**
+     * Sets the current score of the player
+     * @param score - the current score of the player
+     */
+    public void setScore(int score) {
+        this.score = score;
+    }
+
     /**
      * Returns player score
      * @return integer score value

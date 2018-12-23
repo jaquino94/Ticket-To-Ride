@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
@@ -469,12 +470,21 @@ public class GUIController {
     @FXML
     private HBox trainCardView;
 
+    @FXML
+    private Label p1Score;
+
+    @FXML
+    private Label p2Score;
+
     public void initialize(){
         initPlayerHand();
         initDestinationButtons();
         initRoutes();
         initTrainCards();
         setTrainCardImages();
+        showCurrentPlayerDestinationHand();
+        p1Score.setText(Integer.toString(player1.getScore()));
+        p2Score.setText(Integer.toString(player2.getScore()));
     }
 
     @FXML
@@ -486,6 +496,8 @@ public class GUIController {
                 claimRoute(currentPlayer, city1, city2);
             }
 
+            System.out.println("Current Player Score: " + currentPlayer.getScore());
+            showPlayerScore();
             enableRadioButtons();
             resetCities();
 
@@ -653,6 +665,7 @@ public class GUIController {
         for (int i = 0; i < routes.get(citiesRoute).size(); i++) {
             routes.get(citiesRoute).get(i).setFill(currentPlayer.getPlayerColor());
         }
+        gameLogic.calculateScore(currentPlayer, foundRoute);
         citiesRoute.clear();
     }
 
@@ -666,7 +679,16 @@ public class GUIController {
             }
         }
         playerHand.setText(builder.toString());
-        player.setText("Current Player:" + currentPlayer.getColor());
+        player.setText(currentPlayer.getColor());
+        player.setTextFill(Paint.valueOf(currentPlayer.getColor()));
+    }
+
+    private void showPlayerScore() {
+        if ( currentPlayer == player1 ) {
+            p1Score.setText(Integer.toString(currentPlayer.getScore()));
+        } else {
+            p2Score.setText(Integer.toString(currentPlayer.getScore()));
+        }
     }
 
     /**
@@ -815,5 +837,6 @@ public class GUIController {
                 CoudersportToWilliamsport3, CoudersportToWilliamsport4)));
         routes.put(new ArrayList<>(Arrays.asList("Wheeling", "Pittsburg")), new ArrayList<>(Arrays.asList(WheelingToPittsburg1, WheelingToPittsburg2)));
         routes.put(new ArrayList<>(Arrays.asList("Pittsburg", "MorganTown")), new ArrayList<>(Arrays.asList(PittsburgToMorgantown1, PittsburgToMorgantown2, PittsburgToMorgantown3)));
+        routes.put(new ArrayList<>(Arrays.asList("Warren", "Buffalo")), new ArrayList<>(Arrays.asList(BuffaloToWarren1, BuffaloToWarren2, BuffaloToWarren3, BuffaloToWarren4)));
     }
 }

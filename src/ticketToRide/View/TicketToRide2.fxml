@@ -58,9 +58,14 @@
                         <Button fx:id="trainCard" layoutX="159.0" layoutY="65.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="50.0" prefWidth="135.0" text="Draw Train Card" textAlignment="CENTER" wrapText="true" />
                         <Button fx:id="destinationCard" layoutX="305.0" layoutY="65.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="50.0" prefWidth="135.0" text="Draw Destination Card" textAlignment="CENTER" wrapText="true" />
                         <Button fx:id="quitButton" layoutX="189.0" layoutY="121.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="50.0" prefWidth="75.0" style="-fx-background-color: #ff1e1e#ff1e1e;" text="QUIT" />
-                        <Label fx:id="player" alignment="CENTER" layoutX="27.0" layoutY="6.0" prefHeight="55.0" prefWidth="250.0" text="Current player:">
+                        <Label fx:id="playerLabel" alignment="CENTER" layoutX="91.0" layoutY="6.0" prefHeight="55.0" prefWidth="120.0" text="Current player:">
                            <font>
                               <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="player" layoutX="213.0" layoutY="8.0" prefHeight="55.0" prefWidth="150.0" text=" " textAlignment="CENTER">
+                           <font>
+                              <Font size="20.0" />
                            </font>
                         </Label>
                      </children></AnchorPane>
@@ -226,6 +231,26 @@
                         <Image url="@imgs/logo.jpg" />
                      </image>
                   </ImageView>
+                  <Label layoutX="3.0" layoutY="363.0" prefHeight="55.0" prefWidth="100.0" text="Player 1:" textAlignment="CENTER">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <Label layoutY="433.0" prefHeight="55.0" prefWidth="100.0" text="Player 2:" textAlignment="CENTER">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="p1Score" layoutX="108.0" layoutY="364.0" prefHeight="55.0" prefWidth="100.0" textAlignment="CENTER">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="p2Score" layoutX="109.0" layoutY="435.0" prefHeight="55.0" prefWidth="100.0" textAlignment="CENTER">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
                </children></AnchorPane>
         </items>
       </SplitPane>

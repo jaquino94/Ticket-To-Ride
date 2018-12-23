@@ -49,6 +49,37 @@ public class GameLogic {
 		return false;
     }
 
+    public void calculateScore(Player currentPlayer, Route route){
+	    int routeLength = route.getRouteLength();
+	    int score = 0;
+
+	    switch (routeLength) {
+            case 1:
+               score = currentPlayer.getScore() + 1;
+               break;
+            case 2:
+                score = currentPlayer.getScore() + 2;
+                break;
+            case 3:
+                score = currentPlayer.getScore() + 4;
+                break;
+            case 4:
+                score = currentPlayer.getScore() + 7;
+                break;
+            case 5:
+                score = currentPlayer.getScore() + 10;
+                break;
+            case 6:
+                score = currentPlayer.getScore() + 15;
+                break;
+            case 7:
+                score = currentPlayer.getScore() + 20;
+                break;
+        }
+
+        currentPlayer.setScore(score);
+    }
+
 	public void discardPlayerHand(Player player, GameBoard routes, String city1, String city2) {
 		Route route = routes.getRoute(city1, city2);
 		List<TrainCarCard> player_hand = player.getTcHand();
