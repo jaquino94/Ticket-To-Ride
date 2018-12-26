@@ -1,9 +1,6 @@
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -471,10 +468,11 @@ public class GUIController {
     private HBox trainCardView;
 
     @FXML
-    private Label p1Score;
+    private TextField p2Score;
 
     @FXML
-    private Label p2Score;
+    private TextField p1Score;
+
 
     public void initialize(){
         initPlayerHand();
@@ -494,14 +492,15 @@ public class GUIController {
         if ( pressed.equals(route) ) {
             if ( gameLogic.isValidMove(currentPlayer, board, city1, city2) ) {
                 claimRoute(currentPlayer, city1, city2);
+                gameLogic.discardPlayerHand(currentPlayer, board, city1, city2);
             }
 
-            System.out.println("Current Player Score: " + currentPlayer.getScore());
             showPlayerScore();
             enableRadioButtons();
             resetCities();
 
             currentPlayer = gameLogic.getCurrentPlayer(currentPlayer, player1, player2);
+            currentTrainCards();
             setTrainCardImages();
             showCurrentPlayerDestinationHand();
 
@@ -517,6 +516,7 @@ public class GUIController {
             }
 
             currentPlayer = gameLogic.getCurrentPlayer(currentPlayer, player1, player2);
+            currentTrainCards();
             setTrainCardImages();
             showCurrentPlayerDestinationHand();
         }
@@ -625,43 +625,12 @@ public class GUIController {
      * that matches the length of the route
      */
     private void claimRoute(Player currentPlayer, String city1, String city2) {
-        ArrayList<String> citiesRoute;
-        String color;
-        int color1 = 0, color2 = 0;
 
         Route foundRoute = board.getRoute(city1, city2);
-        List<TrainCarCard> player_hand = currentPlayer.getTcHand();
-        citiesRoute = board.getKey(city1, city2);
+        List<String> citiesRoute = board.getKey(city1, city2);
+        String color = gameLogic.whichColor(currentPlayer, board, city1, city2);
 
-        if ( foundRoute.getRouteColor2() != null ) {
-            for (int i = 0; i < player_hand.size(); i++) {
-                if ( player_hand.get(i).getColor().equals(foundRoute.getRouteColor1()) ) {
-                    color1++;
-                    if ( color1 == foundRoute.getRouteLength() ) {
-                        color = foundRoute.getRouteColor1();
-                        citiesRoute.add(color);
-                        break;
-                    }
-                } else if ( player_hand.get(i).getColor().equals(foundRoute.getRouteColor2()) ) {
-                    color2++;
-                    if ( color2 == foundRoute.getRouteLength() ) {
-                        color = foundRoute.getRouteColor2();
-                        citiesRoute.add(color);
-                        break;
-                    }
-                }
-            }
-        } else {
-            for (int i = 0; i < player_hand.size(); i++) {
-                if ( player_hand.get(i).getColor().equals(foundRoute.getRouteColor1()) ) {
-                    color1++;
-                    if (color1 == foundRoute.getRouteLength()) {
-                        break;
-                    }
-                }
-            }
-        }
-
+        citiesRoute.add(color);
         for (int i = 0; i < routes.get(citiesRoute).size(); i++) {
             routes.get(citiesRoute).get(i).setFill(currentPlayer.getPlayerColor());
         }
@@ -695,6 +664,13 @@ public class GUIController {
      * Initializes the TrainCards list that holds the ImageView to show the player's train car cards
      */
     private void initTrainCards(){
+        for(int i = 0; i < currentPlayer.getTcHand().size(); i++){
+            trainCards.add(new ImageView());
+        }
+    }
+
+    private void currentTrainCards(){
+        trainCards.clear();
         for(int i = 0; i < currentPlayer.getTcHand().size(); i++){
             trainCards.add(new ImageView());
         }

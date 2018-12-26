@@ -21,25 +21,25 @@ public class GameLogic {
 		Route route = routes.getRoute(city1, city2);
 		List<TrainCarCard> player_hand = player.getTcHand();
 		if ( route != null ) {
-			if ( route.getRouteColor2() != null) {
+			if ( route.getRouteColor2() != null ) {
 				for (int i = 0; i < player_hand.size(); i++) {
-					if (player_hand.get(i).getColor().equals(route.getRouteColor1())) {
+					if ( player_hand.get(i).getColor().equals(route.getRouteColor1()) ) {
 						color1++;
 						if (color1 == route.getRouteLength()) {
 							return true;
 						}
-					} else if (player_hand.get(i).getColor().equals(route.getRouteColor2())) {
+					} else if ( player_hand.get(i).getColor().equals(route.getRouteColor2()) ) {
 						color2++;
-						if (color2 == route.getRouteLength()) {
+						if ( color2 == route.getRouteLength() ) {
 							return true;
 						}
 					}
 				}
 			} else {
 				for (int i = 0; i < player_hand.size(); i++) {
-					if (player_hand.get(i).getColor().equals(route.getRouteColor1())) {
+					if ( player_hand.get(i).getColor().equals(route.getRouteColor1()) ) {
 						color1++;
-						if (color1 == route.getRouteLength()) {
+						if ( color1 == route.getRouteLength() ) {
 							return true;
 						}
 					}
@@ -81,20 +81,21 @@ public class GameLogic {
     }
 
 	public void discardPlayerHand(Player player, GameBoard routes, String city1, String city2) {
-		Route route = routes.getRoute(city1, city2);
-		List<TrainCarCard> player_hand = player.getTcHand();
-		int removedCards = 0;
+	    int removedCards = 0;
 
-		for(Iterator<TrainCarCard> i = player_hand.iterator(); i.hasNext(); ) {
-			TrainCarCard a = i.next();
-			if( a.getColor().equals(route.getRouteColor1()) && removedCards < route.getRouteLength() ) {
-				removedCards++;
-				i.remove();
-			} else if ( a.getColor().equals(route.getRouteColor2()) && removedCards < route.getRouteLength() ) {
-				removedCards++;
-				i.remove();
-			}
-		}
+	    Route route = routes.getRoute(city1, city2);
+        List<TrainCarCard> player_new_hand = new ArrayList<>();
+        String color = whichColor(player, routes, city1, city2);
+
+        for(int i = 0; i < player.getTcHand().size(); i++){
+            if ( !player.getTcHand().get(i).getColor().equals(color) && removedCards < route.getRouteLength() ) {
+                removedCards++;
+                player_new_hand.add(player.getTcHand().get(i));
+            } else if ( removedCards > route.getRouteLength() ) {
+                player_new_hand.add(player.getTcHand().get(i));
+            }
+        }
+        player.setTcHand(player_new_hand);
 	}
 
     public Player getCurrentPlayer(Player currentPlayer, Player p1, Player p2) {
@@ -105,9 +106,34 @@ public class GameLogic {
         return p1;
 	}
 
-	public void addToDiscardPile(Player player, GameBoard routes, String city1, String city2){
-	    Route route = routes.getRoute(city1,city2);
-	}
+	public String whichColor(Player currentPlayer, GameBoard routes, String city1, String city2) {
+        int color1 = 0, color2 = 0;
+        String color = "";
+        List<TrainCarCard> player_hand = currentPlayer.getTcHand();
+        Route route = routes.getRoute(city1,city2);
 
+        if ( route != null ) {
+            if ( route.getRouteColor2() != null ) {
+                for (int i = 0; i < player_hand.size(); i++) {
+                    if (player_hand.get(i).getColor().equals(route.getRouteColor1())) {
+                        color1++;
+                        if ( color1 == route.getRouteLength() ) {
+                            color = route.getRouteColor1();
+                            return color;
+                        }
+                    } else if ( player_hand.get(i).getColor().equals(route.getRouteColor2()) ) {
+                        color2++;
+                        if (color2 == route.getRouteLength()) {
+                            color = route.getRouteColor2();
+                            return color;
+                        }
+                    }
+                }
+            } else {
+                color = route.getRouteColor1();
+            }
+        }
 
+        return color;
+    }
 }

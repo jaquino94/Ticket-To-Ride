@@ -13,7 +13,7 @@ public class GameBoard {
 	private Deck tcDeck;
 	private Deck dcDeck;
 	//private LinkedList<Player> players;
-    private HashMap<List<String>, Route> destinations;
+    private HashMap<ArrayList<String>, Route> destinations = new HashMap<>();
     /**
      * Constructs a game board for Ticket to ride. Initializes routes in destinations map. Initializes and
      * fills card decks.
@@ -33,7 +33,7 @@ public class GameBoard {
      * @return route that connects cities
      */
     public Route getRoute(String city1, String city2) {
-        ArrayList<String> cities = getKey(city1, city2);
+        List<String> cities = getKey(city1, city2);
         Route foundRoute;
         if (cities == null) {
             foundRoute = null;
@@ -49,13 +49,12 @@ public class GameBoard {
      * @param c2 - second city chosen
      * @return list of cities in route
      */
-    public ArrayList<String> getKey(String c1, String c2){
-        Set keySet = destinations.keySet();
+    public List<String> getKey(String c1, String c2){
+        initDestinations(); //TEMPORARY FIX! The keys are being removed for some reason
 
-        for(Iterator itr = keySet.iterator(); itr.hasNext();){
-            ArrayList<String> keys = (ArrayList<String>) itr.next();
-            if(keys.contains(c1) && keys.contains(c2)){
-                return keys;
+        for(List<String> key : destinations.keySet() ){
+            if ( key.contains(c1) && key.contains(c2) ) {
+                return key;
             }
         }
         return null;
@@ -85,8 +84,7 @@ public class GameBoard {
                             3) The route length
      */
     private void initDestinations(){
-        destinations = new HashMap<>();
-
+        destinations.clear();
         destinations.put(new ArrayList<>(Arrays.asList("Erie", "YoungsTown")), new Route("GREEN", "YELLOW", 4));
         destinations.put(new ArrayList<>(Arrays.asList("Coudersport", "Williamsport")), new Route("GREEN", 4));
         destinations.put(new ArrayList<>(Arrays.asList("Erie", "Warren")), new Route("BLUE", 3));

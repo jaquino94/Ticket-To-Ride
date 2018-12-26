@@ -36,6 +36,14 @@ public class Player {
     public List<TrainCarCard> getTcHand() {
         return tcHand;
     }
+
+    /**
+     * Sets the hand of train cards cards
+     * @param tcHand the new list of train cards
+     */
+    public void setTcHand(List<TrainCarCard> tcHand) {
+        this.tcHand = tcHand;
+    }
     /**
      * Returns hand of destination cards
      * @returns list of destination cards
