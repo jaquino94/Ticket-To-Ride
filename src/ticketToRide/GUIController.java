@@ -531,40 +531,33 @@ public class GUIController {
 
         if (city1.equals("") & city2.equals("") ) {
             city1 = button.getId();
-            System.out.println("CITY1: " + city1);
         } else if ( !city1.equals("") && city2.equals("") ) {
             if ( button.getId().equals(city1) ) {
                 city1 = "";
                 citiesPicked = false;
                 enableRadioButtons();
-                System.out.println("UNCHECKED CITY 1");
             } else {
                 city2 = button.getId();
                 citiesPicked = true;
-                System.out.println("CITY2: " + city2);
             }
         } else if ( city1.equals("") && !city2.equals("") ) {
             if ( button.getId().equals(city2) ) {
                 city2 = "";
                 citiesPicked = false;
                 enableRadioButtons();
-                System.out.println("UNCHECKED CITY 2");
             } else {
                 city1 = button.getId();
                 citiesPicked = true;
-                System.out.println("CITY1: " + city1);
             }
         } else if (!city1.equals("") && !city2.equals("") ) {
             if ( button.getId().equals(city1) ) {
                 city1 = "";
                 citiesPicked = false;
                 enableRadioButtons();
-                System.out.println("UNCHECKED CITY 1");
             } else if ( button.getId().equals(city2) ) {
                 city2 = "";
                 citiesPicked = false;
                 enableRadioButtons();
-                System.out.println("UNCHECKED CITY 2");
             }
 
         }
@@ -669,6 +662,11 @@ public class GUIController {
         }
     }
 
+    /**
+     * Clears the trainCards list and populates the list again with the amount of ImageView objects
+     * that is based on the player's train card hand.
+     * This allows the program to show the correct amount of train cards in the GUI for the current player.
+     */
     private void currentTrainCards(){
         trainCards.clear();
         for(int i = 0; i < currentPlayer.getTcHand().size(); i++){
@@ -680,7 +678,7 @@ public class GUIController {
      * Sets each ImageView to have the train car image depending on the player's hand
      */
     private void setTrainCardImages(){
-        System.out.println(currentPlayer.getTcHand().size());
+
         for(int i = 0; i < currentPlayer.getTcHand().size(); i++){
             switch (currentPlayer.getTcHand().get(i).getColor()) {
                 case "GREEN":
