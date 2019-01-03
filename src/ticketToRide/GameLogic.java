@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Iterator;
 
 // Vast majority of functionality is going to go here. All rules for turns and all of game setup
 public class GameLogic {
@@ -81,17 +80,21 @@ public class GameLogic {
     }
 
 	public void discardPlayerHand(Player player, GameBoard routes, String city1, String city2) {
-	    int removedCards = 0;
+	    int matchedColor = 0;
 
 	    Route route = routes.getRoute(city1, city2);
         List<TrainCarCard> player_new_hand = new ArrayList<>();
         String color = whichColor(player, routes, city1, city2);
 
         for(int i = 0; i < player.getTcHand().size(); i++){
-            if ( !player.getTcHand().get(i).getColor().equals(color) && removedCards < route.getRouteLength() ) {
-                removedCards++;
+            if ( player.getTcHand().get(i).getColor().equals(color) ) {
+                matchedColor++;
+            } else if ( matchedColor <= route.getRouteLength() ) {
+                //While we haven't removed the number cards for the route length,
+                //Add the cards that doesn't match the route's color
                 player_new_hand.add(player.getTcHand().get(i));
-            } else if ( removedCards > route.getRouteLength() ) {
+            } else {
+                //Once we find the amount of cards equal to the route's length, we add the rest of the cards
                 player_new_hand.add(player.getTcHand().get(i));
             }
         }
@@ -103,6 +106,7 @@ public class GameLogic {
 	    if (currentPlayer == p1) {
 	        return  p2;
         }
+
         return p1;
 	}
 
@@ -131,6 +135,7 @@ public class GameLogic {
                 }
             } else {
                 color = route.getRouteColor1();
+                return color;
             }
         }
 

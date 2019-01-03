@@ -88,7 +88,7 @@ public class GameBoard {
         destinations.put(new ArrayList<>(Arrays.asList("Erie", "YoungsTown")), new Route("GREEN", "YELLOW", 4));
         destinations.put(new ArrayList<>(Arrays.asList("Coudersport", "Williamsport")), new Route("GREEN", 4));
         destinations.put(new ArrayList<>(Arrays.asList("Erie", "Warren")), new Route("BLUE", 3));
-        destinations.put(new ArrayList<>(Arrays.asList("Wheeling", "Pittsburg")), new Route("GREEN", 2));
+        destinations.put(new ArrayList<>(Arrays.asList("Wheeling", "Pittsburg")), new Route("GREEN", "WHITE", 2));
         destinations.put(new ArrayList<>(Arrays.asList("Pittsburg", "MorganTown")), new Route("YELLOW", 3));
         destinations.put(new ArrayList<>(Arrays.asList("Rochester", "Syracuse")), new Route("BLUE", "PINK", 4));
         destinations.put(new ArrayList<>(Arrays.asList("Cumberland", "Baltimore")), new Route("BLUE", 7));
@@ -96,6 +96,20 @@ public class GameBoard {
         destinations.put(new ArrayList<>(Arrays.asList("Lancaster", "Philadelphia")), new Route("GREEN", 4));
         destinations.put(new ArrayList<>(Arrays.asList("Warren", "Buffalo")), new Route("GREEN", 4));
         destinations.put(new ArrayList<>(Arrays.asList("Binghamton", "Albany")), new Route("PINK", 6));
-
+        destinations.put(new ArrayList<>(Arrays.asList("Cumberland", "Chambersburg")), new Route("GREEN", 2));
+        destinations.put(new ArrayList<>(Arrays.asList("Harrisburg", "Chambersburg")), new Route("BLUE", 2));
+        destinations.put(new ArrayList<>(Arrays.asList("Scranton", "Binghamton")), new Route("GREEN", "BLACK", 3));
+        destinations.put(new ArrayList<>(Arrays.asList("YoungsTown", "Pittsburg")), new Route("BLUE", "ORANGE", 4));
+        destinations.put(new ArrayList<>(Arrays.asList("Syracuse", "Binghamton")), new Route("YELLOW", "ORANGE", 2));
+        destinations.put(new ArrayList<>(Arrays.asList("Scranton", "Stroudsburg")), new Route("YELLOW", 2));
+        destinations.put(new ArrayList<>(Arrays.asList("Williamsport", "Lewiston")), new Route("YELLOW", 3));
+        destinations.put(new ArrayList<>(Arrays.asList("Harrisburg", "Gettysburg")), new Route("YELLOW", 2));
+        destinations.put(new ArrayList<>(Arrays.asList("Reading", "Lancaster")), new Route("YELLOW", 1));
+        destinations.put(new ArrayList<>(Arrays.asList("Johnstown", "Altoona")), new Route("BLUE", "YELLOW", 1));
+        destinations.put(new ArrayList<>(Arrays.asList("York", "Lancaster")), new Route("PINK", 1));
+        destinations.put(new ArrayList<>(Arrays.asList("Lancaster", "Philadelphia")), new Route("GREEN", "ORANGE", 4));
+        destinations.put(new ArrayList<>(Arrays.asList("Scranton", "Allentown")), new Route("BLUE", "WHITE", 3));
+        destinations.put(new ArrayList<>(Arrays.asList("YoungsTown", "OilCity")), new Route("WHITE", 3));
+        destinations.put(new ArrayList<>(Arrays.asList("Harrisburg", "Reading")), new Route("PINK", 2));
     }
 }

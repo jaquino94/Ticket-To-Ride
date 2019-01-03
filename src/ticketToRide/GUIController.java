@@ -8,10 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class GUIController {
 
@@ -28,6 +25,8 @@ public class GUIController {
     private HashMap<String, RadioButton> destinations = new HashMap<>();
     private HashMap<List<String>, List<Rectangle>> routes = new HashMap<>();
     private ArrayList<ImageView> trainCards = new ArrayList<>();
+    private String[] colors = {"YELLOW", "GREEN", "BLUE", "RED",
+                                "ORANGE", "BLACK", "WHITE", "PINK"};
 
     @FXML
     private TextArea playerHand;
@@ -75,7 +74,7 @@ public class GUIController {
     private RadioButton MorganTown;
 
     @FXML
-    private RadioButton Johstown;
+    private RadioButton Johnstown;
 
     @FXML
     private RadioButton Altoona;
@@ -186,13 +185,22 @@ public class GUIController {
     private Rectangle CoudersportToWilliamsport4;
 
     @FXML
-    private Rectangle BinghamtonToScranton1;
+    private Rectangle BinghamtonToScrantonGreen1;
 
     @FXML
-    private Rectangle BinghamtonToScranton2;
+    private Rectangle BinghamtonToScrantonGreen2;
 
     @FXML
-    private Rectangle BinghamtonToScranton3;
+    private Rectangle BinghamtonToScrantonGreen3;
+
+    @FXML
+    private Rectangle BinghamtonToScrantonBlack1;
+
+    @FXML
+    private Rectangle BinghamtonToScrantonBlack2;
+
+    @FXML
+    private Rectangle BinghamtonToScrantonBlack3;
 
     @FXML
     private Rectangle AlbanyToNewYorkGreen1;
@@ -249,10 +257,16 @@ public class GUIController {
     private Rectangle AltoonaToLewiston1;
 
     @FXML
-    private Rectangle WheelingToPittsburg1;
+    private Rectangle WheelingToPittsburgGreen1;
 
     @FXML
-    private Rectangle WheelingToPittsburg2;
+    private Rectangle WheelingToPittsburgGreen2;
+
+    @FXML
+    private Rectangle WheelingToPittsburgWhite1;
+
+    @FXML
+    private Rectangle WheelingToPittsburgWhite2;
 
     @FXML
     private Rectangle BuffaloToWarren1;
@@ -279,13 +293,25 @@ public class GUIController {
     private Rectangle LancasterToPhillyGreen1;
 
     @FXML
-    private Rectangle LancasterToPhilly2;
+    private Rectangle LancasterToPhillyGreen2;
 
     @FXML
-    private Rectangle LancasterToPhilly3;
+    private Rectangle LancasterToPhillyGreen3;
 
     @FXML
-    private Rectangle LancasterToPhilly4;
+    private Rectangle LancasterToPhillyGreen4;
+
+    @FXML
+    private Rectangle LancasterToPhillyOrange1;
+
+    @FXML
+    private Rectangle LancasterToPhillyOrange2;
+
+    @FXML
+    private Rectangle LancasterToPhillyOrange3;
+
+    @FXML
+    private Rectangle LancasterToPhillyOrange4;
 
     @FXML
     private Rectangle BaltimoreToCumberland1;
@@ -315,7 +341,10 @@ public class GUIController {
     private Rectangle HarrisburgToChambersburg2;
 
     @FXML
-    private Rectangle AltoonaToJohnstown;
+    private Rectangle AltoonaToJohnstownYellow;
+
+    @FXML
+    private Rectangle AltoonaToJohnstownBlue;
 
     @FXML
     private Rectangle ErieToWarren1;
@@ -348,16 +377,37 @@ public class GUIController {
     private Rectangle ScrantonToAllentownBlue3;
 
     @FXML
-    private Rectangle YoungstownToPittsburgBlue1;
+    private Rectangle ScrantonToAllentownWhite1;
 
     @FXML
-    private Rectangle YoungstownToPittsburgBlue2;
+    private Rectangle ScrantonToAllentownWhite2;
 
     @FXML
-    private Rectangle YoungstownToPittsburgBlue3;
+    private Rectangle ScrantonToAllentownWhite3;
 
     @FXML
-    private Rectangle YoungstownToPittsburgBlue4;
+    private Rectangle YoungsTownToPittsburgBlue1;
+
+    @FXML
+    private Rectangle YoungsTownToPittsburgBlue2;
+
+    @FXML
+    private Rectangle YoungsTownToPittsburgBlue3;
+
+    @FXML
+    private Rectangle YoungsTownToPittsburgBlue4;
+
+    @FXML
+    private Rectangle YoungsTownToPittsburgOrange1;
+
+    @FXML
+    private Rectangle YoungsTownToPittsburgOrange2;
+
+    @FXML
+    private Rectangle YoungsTownToPittsburgOrange3;
+
+    @FXML
+    private Rectangle YoungsTownToPittsburgOrange4;
 
     @FXML
     private Rectangle WheelingToMorgantown1;
@@ -426,9 +476,6 @@ public class GUIController {
     private Rectangle PittsburgToMorgantown3;
 
     @FXML
-    private Rectangle JohnstownToAltoona;
-
-    @FXML
     private Rectangle ReadingToLancaster;
 
     @FXML
@@ -453,16 +500,31 @@ public class GUIController {
     private Rectangle ScrantonToStroudsburg2;
 
     @FXML
-    private Rectangle SyracusToBinghamton1;
+    private Rectangle SyracuseToBinghamtonYellow1;
 
     @FXML
-    private Rectangle SyracusToBinghamton2;
+    private Rectangle SyracuseToBinghamtonYellow2;
+
+    @FXML
+    private Rectangle SyracuseToBinghamtonOrange1;
+
+    @FXML
+    private Rectangle SyracuseToBinghamtonOrange2;
 
     @FXML
     private Rectangle ElmiraToTowanda1;
 
     @FXML
     private Rectangle ElmiraToTowanda2;
+
+    @FXML
+    private Rectangle YoungsTownToOilCity1;
+
+    @FXML
+    private Rectangle YoungsTownToOilCity2;
+
+    @FXML
+    private Rectangle YoungsTownToOilCity3;
 
     @FXML
     private HBox trainCardView;
@@ -515,6 +577,9 @@ public class GUIController {
                currentPlayer.addDCCard(board.getDCCard());
             }
 
+            enableRadioButtons();
+            resetCities();
+
             currentPlayer = gameLogic.getCurrentPlayer(currentPlayer, player1, player2);
             currentTrainCards();
             setTrainCardImages();
@@ -529,27 +594,9 @@ public class GUIController {
     void pressed(ActionEvent event) {
         RadioButton button = (RadioButton)event.getSource();
 
-        if (city1.equals("") & city2.equals("") ) {
+        if (city1.equals("") && city2.equals("") ) {
             city1 = button.getId();
-        } else if ( !city1.equals("") && city2.equals("") ) {
-            if ( button.getId().equals(city1) ) {
-                city1 = "";
-                citiesPicked = false;
-                enableRadioButtons();
-            } else {
-                city2 = button.getId();
-                citiesPicked = true;
-            }
-        } else if ( city1.equals("") && !city2.equals("") ) {
-            if ( button.getId().equals(city2) ) {
-                city2 = "";
-                citiesPicked = false;
-                enableRadioButtons();
-            } else {
-                city1 = button.getId();
-                citiesPicked = true;
-            }
-        } else if (!city1.equals("") && !city2.equals("") ) {
+        } else {
             if ( button.getId().equals(city1) ) {
                 city1 = "";
                 citiesPicked = false;
@@ -558,18 +605,21 @@ public class GUIController {
                 city2 = "";
                 citiesPicked = false;
                 enableRadioButtons();
+            } else if ( city1.equals("") ) {
+                city1 = button.getId();
+                citiesPicked = true;
+            } else if ( city2.equals("") ) {
+                city2 = button.getId();
+                citiesPicked = true;
             }
-
         }
 
         //Once player has picked two cities, we disable the other buttons
         if ( citiesPicked ) {
             radioButtonsDisabled = true;
             for (String key : destinations.keySet()) {
-                if ( !key.equals(city1) ) {
-                    if ( !key.equals(city2) ) {
-                        destinations.get(key).setDisable(true);
-                    }
+                if ( !key.equals(city1) && !key.equals(city2) ) {
+                    destinations.get(key).setDisable(true);
                 }
             }
         }
@@ -621,11 +671,22 @@ public class GUIController {
 
         Route foundRoute = board.getRoute(city1, city2);
         List<String> citiesRoute = board.getKey(city1, city2);
-        String color = gameLogic.whichColor(currentPlayer, board, city1, city2);
 
-        citiesRoute.add(color);
-        for (int i = 0; i < routes.get(citiesRoute).size(); i++) {
-            routes.get(citiesRoute).get(i).setFill(currentPlayer.getPlayerColor());
+        if ( foundRoute.getRouteColor2() != null ) {
+            String color = gameLogic.whichColor(currentPlayer, board, city1, city2);
+
+            citiesRoute.add(color);
+
+            for (int i = 0; i < routes.get(citiesRoute).size(); i++) {
+                routes.get(citiesRoute).get(i).setFill(currentPlayer.getPlayerColor());
+            }
+
+        } else {
+
+            for (int i = 0; i < routes.get(citiesRoute).size(); i++) {
+                routes.get(citiesRoute).get(i).setFill(currentPlayer.getPlayerColor());
+            }
+
         }
         gameLogic.calculateScore(currentPlayer, foundRoute);
         citiesRoute.clear();
@@ -680,6 +741,7 @@ public class GUIController {
     private void setTrainCardImages(){
 
         for(int i = 0; i < currentPlayer.getTcHand().size(); i++){
+
             switch (currentPlayer.getTcHand().get(i).getColor()) {
                 case "GREEN":
                     trainCards.get(i).setImage(new Image("View/imgs/GreenCar.png"));
@@ -706,10 +768,12 @@ public class GUIController {
                     trainCards.get(i).setImage(new Image("View/imgs/WhiteCar.png"));
                     break;
             }
+
             //Needed to set height and width because the images become enlarged by default
             trainCards.get(i).setFitHeight(135);
             trainCards.get(i).setFitWidth(200);
         }
+
         //Check if HBox has ImageView objects in it.
         if (  trainCardView.getChildren().isEmpty() ) {
             trainCardView.getChildren().addAll(trainCards);
@@ -725,22 +789,15 @@ public class GUIController {
      */
     private void initPlayerHand(){
         //Hard coding TrainCards for testing purposes
-        //@todo make card colors added for each player more "random"
-        player1.addTCCard(new TrainCarCard("YELLOW"));
-        player1.addTCCard(new TrainCarCard("YELLOW"));
-        player1.addTCCard(new TrainCarCard("GREEN"));
-        player1.addTCCard(new TrainCarCard("GREEN"));
-        player1.addTCCard(new TrainCarCard("GREEN"));
-        player1.addTCCard(new TrainCarCard("YELLOW"));
-        player1.addTCCard(new TrainCarCard("GREEN"));
+        Random random = new Random(0);
 
-        player2.addTCCard(new TrainCarCard("GREEN"));
-        player2.addTCCard(new TrainCarCard("RED"));
-        player2.addTCCard(new TrainCarCard("RED"));
-        player2.addTCCard(new TrainCarCard("PINK"));
-        player2.addTCCard(new TrainCarCard("GREEN"));
-        player2.addTCCard(new TrainCarCard("BLUE"));
-        player2.addTCCard(new TrainCarCard("BLUE"));
+        for(int i = 0; i < 5; i++){
+           player1.addTCCard(new TrainCarCard(colors[random.nextInt(colors.length - 1)]));
+        }
+
+        for(int i = 0; i < 5; i++){
+            player2.addTCCard(new TrainCarCard(colors[random.nextInt(colors.length - 1)]));
+        }
     }
 
     /**
@@ -774,7 +831,7 @@ public class GUIController {
         destinations.put(Stroudsburg.getId(), Stroudsburg);
         destinations.put(Reading.getId(), Reading);
         destinations.put(Chambersburg.getId(), Chambersburg);
-        destinations.put(Johstown.getId(), Johstown);
+        destinations.put(Johnstown.getId(), Johnstown);
         destinations.put(Rochester.getId(), Rochester);
         destinations.put(Coudersport.getId(), Coudersport);
         destinations.put(Harrisburg.getId(), Harrisburg);
@@ -792,25 +849,57 @@ public class GUIController {
      */
     private void initRoutes(){
         routes.put(new ArrayList<>(Arrays.asList("Erie","YoungsTown", "YELLOW")), new ArrayList<>(Arrays.asList(ErieToYoungstownYellow1, ErieToYoungstownYellow2,
-                ErieToYoungstownYellow3, ErieToYoungstownYellow4)));
+                                                                                    ErieToYoungstownYellow3, ErieToYoungstownYellow4)));
         routes.put(new ArrayList<>(Arrays.asList("Erie", "YoungsTown", "GREEN")), new ArrayList<>(Arrays.asList(ErieToYoungstownGreen1, ErieToYoungstownGreen2, ErieToYoungstownGreen3,
-                ErieToYoungstownGreen4)));
+                                                                                    ErieToYoungstownGreen4)));
         routes.put(new ArrayList<>(Arrays.asList("Binghamton", "Albany")), new ArrayList<>(Arrays.asList(BinghamtonToAlbany1, BinghamtonToAlbany2, BinghamtonToAlbany3,
-                BinghamtonToAlbany4, BinghamtonToAlbany5, BinghamtonToAlbany6)));
+                                                                                    BinghamtonToAlbany4, BinghamtonToAlbany5, BinghamtonToAlbany6)));
         routes.put(new ArrayList<>(Arrays.asList("OilCity", "Dubois")), new ArrayList<>(Arrays.asList(OilCityToDubois1, OilCityToDubois2, OilCityToDubois3)));
         routes.put(new ArrayList<>(Arrays.asList("Rochester", "Syracuse", "BLUE")), new ArrayList<>(Arrays.asList(RochesterToSyracuseBlue1, RochesterToSyracuseBlue2,
-                RochesterToSyracuseBlue3, RochesterToSyracuseBlue4)));
+                                                                                    RochesterToSyracuseBlue3, RochesterToSyracuseBlue4)));
         routes.put(new ArrayList<>(Arrays.asList("Rochester", "Syracuse", "PINK")), new ArrayList<>(Arrays.asList(RochesterToSyracusePink1, RochesterToSyracusePink2,
-                RochesterToSyracusePink3, RochesterToSyracusePink4)));
+                                                                                    RochesterToSyracusePink3, RochesterToSyracusePink4)));
         routes.put(new ArrayList<>(Arrays.asList("Elmira", "Towanda")), new ArrayList<>(Arrays.asList(ElmiraToTowanda1, ElmiraToTowanda2)));
         routes.put(new ArrayList<>(Arrays.asList("Rochester", "Elmira")), new ArrayList<>(Arrays.asList(RochesterToElmira1, RochesterToElmira2, RochesterToElmira3)));
         routes.put(new ArrayList<>(Arrays.asList("Wheeling", "MorganTown")), new ArrayList<>(Arrays.asList(WheelingToMorgantown1, WheelingToMorgantown2, WheelingToMorgantown3)));
         routes.put(new ArrayList<>(Arrays.asList("Baltimore", "Cumberland")), new ArrayList<>(Arrays.asList(BaltimoreToCumberland1, BaltimoreToCumberland2, BaltimoreToCumberland3,
-                BaltimoreToCumberland4, BaltimoreToCumberland5, BaltimoreToCumberland5, BaltimoreToCumberland6, BaltimoreToCumberland7)));
+                                                                                    BaltimoreToCumberland4, BaltimoreToCumberland5, BaltimoreToCumberland5, BaltimoreToCumberland6, BaltimoreToCumberland7)));
         routes.put(new ArrayList<>(Arrays.asList("Coudersport", "Williamsport")), new ArrayList<>(Arrays.asList(CoudersportToWilliamsport1, CoudersportToWilliamsport2,
-                CoudersportToWilliamsport3, CoudersportToWilliamsport4)));
-        routes.put(new ArrayList<>(Arrays.asList("Wheeling", "Pittsburg")), new ArrayList<>(Arrays.asList(WheelingToPittsburg1, WheelingToPittsburg2)));
+                                                                                    CoudersportToWilliamsport3, CoudersportToWilliamsport4)));
+        routes.put(new ArrayList<>(Arrays.asList("Wheeling", "Pittsburg", "GREEN")), new ArrayList<>(Arrays.asList(WheelingToPittsburgGreen1, WheelingToPittsburgGreen2)));
+        routes.put(new ArrayList<>(Arrays.asList("Wheeling", "Pittsburg", "WHITE")), new ArrayList<>(Arrays.asList(WheelingToPittsburgWhite1, WheelingToPittsburgWhite2)));
         routes.put(new ArrayList<>(Arrays.asList("Pittsburg", "MorganTown")), new ArrayList<>(Arrays.asList(PittsburgToMorgantown1, PittsburgToMorgantown2, PittsburgToMorgantown3)));
         routes.put(new ArrayList<>(Arrays.asList("Warren", "Buffalo")), new ArrayList<>(Arrays.asList(BuffaloToWarren1, BuffaloToWarren2, BuffaloToWarren3, BuffaloToWarren4)));
+        routes.put(new ArrayList<>(Arrays.asList("Cumberland", "Chambersburg")), new ArrayList<>(Arrays.asList(CumberlandToChambersburg1, CumberlandToChambersburg2)));
+        routes.put(new ArrayList<>(Arrays.asList("Harrisburg", "Chambersburg")), new ArrayList<>(Arrays.asList(HarrisburgToChambersburg1, HarrisburgToChambersburg2)));
+        routes.put(new ArrayList<>(Arrays.asList("Scranton", "Binghantom", "GREEN")), new ArrayList<>(Arrays.asList(BinghamtonToScrantonGreen1, BinghamtonToScrantonGreen2, BinghamtonToScrantonGreen3)));
+        routes.put(new ArrayList<>(Arrays.asList("Scranton", "Binghantom", "BLACK")), new ArrayList<>(Arrays.asList(BinghamtonToScrantonBlack1, BinghamtonToScrantonBlack2, BinghamtonToScrantonBlack3)));
+        routes.put(new ArrayList<>(Arrays.asList("YoungsTown", "Pittsburg", "BLUE")), new ArrayList<>(Arrays.asList(YoungsTownToPittsburgBlue1, YoungsTownToPittsburgBlue2,
+                                                                                        YoungsTownToPittsburgBlue3, YoungsTownToPittsburgBlue4)));
+        routes.put(new ArrayList<>(Arrays.asList("YoungsTown", "Pittsburg", "ORANGE")), new ArrayList<>(Arrays.asList(YoungsTownToPittsburgOrange1, YoungsTownToPittsburgOrange2,
+                                                                                        YoungsTownToPittsburgOrange3, YoungsTownToPittsburgOrange4)));
+        routes.put(new ArrayList<>(Arrays.asList("Syracuse", "Binghamton", "YELLOW")), new ArrayList<>(Arrays.asList(SyracuseToBinghamtonYellow1, SyracuseToBinghamtonYellow2)));
+        routes.put(new ArrayList<>(Arrays.asList("Syracuse", "Binghamton", "ORANGE")), new ArrayList<>(Arrays.asList(SyracuseToBinghamtonOrange1, SyracuseToBinghamtonOrange2)));
+        routes.put(new ArrayList<>(Arrays.asList("Scranton", "Stroudsburg")), new ArrayList<>(Arrays.asList(ScrantonToStroudsburg1, ScrantonToStroudsburg2)));
+        routes.put(new ArrayList<>(Arrays.asList("Williamsport", "Lewiston")), new ArrayList<>(Arrays.asList(WilliamsportToLewiston1, WilliamsportToLewiston2, WilliamsportToLewiston3)));
+        routes.put(new ArrayList<>(Arrays.asList("Harrisburg", "Gettysburg")), new ArrayList<>(Arrays.asList(HarrisburgToGettysburg1, HarrisburgToGettysburg2)));
+        routes.put(new ArrayList<>(Arrays.asList("Reading", "Lancaster")), new ArrayList<>(Arrays.asList(ReadingToLancaster)));
+        routes.put(new ArrayList<>(Arrays.asList("Johnstown", "Altoona", "BLUE")), new ArrayList<>(Arrays.asList(AltoonaToJohnstownBlue)));
+        routes.put(new ArrayList<>(Arrays.asList("Johnstown", "Altoona", "YELLOW")), new ArrayList<>(Arrays.asList(AltoonaToJohnstownYellow)));
+        routes.put(new ArrayList<>(Arrays.asList("York", "Lancaster")), new ArrayList<>(Arrays.asList(YorkToLancaster)));
+        routes.put(new ArrayList<>(Arrays.asList("Lancaster", "Philadelphia", "GREEN")), new ArrayList<>(Arrays.asList(LancasterToPhillyGreen1, LancasterToPhillyGreen2,
+                                                                                        LancasterToPhillyGreen3, LancasterToPhillyGreen4)));
+        routes.put(new ArrayList<>(Arrays.asList("Lancaster", "Philadelphia", "ORANGE")), new ArrayList<>(Arrays.asList(LancasterToPhillyOrange1, LancasterToPhillyOrange2,
+                                                                                        LancasterToPhillyOrange3, LancasterToPhillyOrange4)));
+        routes.put(new ArrayList<>(Arrays.asList("YoungsTown", "OilCity")), new ArrayList<>(Arrays.asList(YoungsTownToOilCity1, YoungsTownToOilCity2, YoungsTownToOilCity3)));
+        routes.put(new ArrayList<>(Arrays.asList("Harrisburg", "Reading")), new ArrayList<>(Arrays.asList(HarrisburgToChambersburg1, HarrisburgToChambersburg2)));
+        routes.put(new ArrayList<>(Arrays.asList("Scraton", "Allentown", "WHITE")), new ArrayList<>(Arrays.asList(ScrantonToAllentownWhite1, ScrantonToAllentownWhite2, ScrantonToAllentownWhite3)));
+        routes.put(new ArrayList<>(Arrays.asList("Scranton", "Allentown", "BLUE")), new ArrayList<>(Arrays.asList(ScrantonToAllentownBlue1, ScrantonToAllentownBlue2, ScrantonToAllentownBlue3)));
+        routes.put(new ArrayList<>(Arrays.asList("Erie", "Warren")), new ArrayList<>(Arrays.asList(ErieToWarren1, ErieToWarren2, ErieToWarren3)));
+        routes.put(new ArrayList<>(Arrays.asList("Reading", "Allentown")), new ArrayList<>(Arrays.asList(ReadingToAllentown1, ReadingToAllentown2)));
+        routes.put(new ArrayList<>(Arrays.asList("Albany", "NewYork", "BLUE")), new ArrayList<>(Arrays.asList(AlbanyToNewYorkBlue1, AlbanyToNewYorkBlue2, AlbanyToNewYorkBlue3,
+                                                                                AlbanyToNewYorkBlue4, AlbanyToNewYorkBlue5, AlbanyToNewYorkBlue6)));
+        routes.put(new ArrayList<>(Arrays.asList("Albany", "NewYork", "GREEN")), new ArrayList<>(Arrays.asList(AlbanyToNewYorkGreen1, AlbanyToNewYorkGreen2, AlbanyToNewYorkBlue3,
+                                                                                    AlbanyToNewYorkGreen4, AlbanyToNewYorkGreen5, AlbanyToNewYorkGreen6)));
     }
 }
