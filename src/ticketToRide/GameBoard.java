@@ -50,7 +50,9 @@ public class GameBoard {
      * @return list of cities in route
      */
     public List<String> getKey(String c1, String c2){
-        initDestinations(); //TEMPORARY FIX! The keys are being removed for some reason
+        //TEMPORARY FIX! The keys are being erased during runtime
+        //because they're treated as raw types!
+        initDestinations();
 
         for(List<String> key : destinations.keySet() ){
             if ( key.contains(c1) && key.contains(c2) ) {
@@ -111,5 +113,15 @@ public class GameBoard {
         destinations.put(new ArrayList<>(Arrays.asList("Scranton", "Allentown")), new Route("BLUE", "WHITE", 3));
         destinations.put(new ArrayList<>(Arrays.asList("YoungsTown", "OilCity")), new Route("WHITE", 3));
         destinations.put(new ArrayList<>(Arrays.asList("Harrisburg", "Reading")), new Route("PINK", 2));
+        destinations.put(new ArrayList<>(Arrays.asList("Buffalo", "Rochester")), new Route("BLACK", "YELLOW", 5));
+        destinations.put(new ArrayList<>(Arrays.asList("Williamsport", "Towanda")), new Route("BLACK", 2));
+        destinations.put(new ArrayList<>(Arrays.asList("York", "Harrisburg")), new Route("BLACK", 1));
+        destinations.put(new ArrayList<>(Arrays.asList("Gettysburg", "Chambersburg")), new Route("BLACK", 1));
+        destinations.put(new ArrayList<>(Arrays.asList("Dubois", "Warren")), new Route("BLACK", 3));
+        destinations.put(new ArrayList<>(Arrays.asList("Elmira", "Syracuse")), new Route("BLACK", 4));
+        destinations.put(new ArrayList<>(Arrays.asList("Allentown", "Philadelphia")), new Route("BLACK", "RED", 3));
+        destinations.put(new ArrayList<>(Arrays.asList("Johnstown", "Pittsburg")), new Route("BLACK", "YELLOW", 4));
+        destinations.put(new ArrayList<>(Arrays.asList("AtlanticCity", "NewYorkCity")), new Route("BLACK", "WHITE", 6));
+        destinations.put(new ArrayList<>(Arrays.asList("Reading", "Allentown")), new Route("GREEN", 2));
     }
 }

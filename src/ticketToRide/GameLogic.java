@@ -7,6 +7,8 @@ public class GameLogic {
 	private Deck discardPile = new Deck();
 	List<TrainCarCard> discards = new ArrayList<>();
 
+	private final int MAX_SCORE = 255;
+
     /*
     	isValidMove tests a Player's cards against the board for:
   	 	1) The correct color of TrainCarCards for a route
@@ -50,51 +52,54 @@ public class GameLogic {
 
     public void calculateScore(Player currentPlayer, Route route){
 	    int routeLength = route.getRouteLength();
-	    int score = 0;
 
 	    switch (routeLength) {
             case 1:
-               score = currentPlayer.getScore() + 1;
-               break;
+                currentPlayer.setScore(currentPlayer.getScore() + 1);
+                break;
             case 2:
-                score = currentPlayer.getScore() + 2;
+                currentPlayer.setScore(currentPlayer.getScore() + 2);
                 break;
             case 3:
-                score = currentPlayer.getScore() + 4;
+                currentPlayer.setScore(currentPlayer.getScore() + 4);
                 break;
             case 4:
-                score = currentPlayer.getScore() + 7;
+                currentPlayer.setScore(currentPlayer.getScore() + 7);
                 break;
             case 5:
-                score = currentPlayer.getScore() + 10;
+                currentPlayer.setScore(currentPlayer.getScore() + 10);
                 break;
             case 6:
-                score = currentPlayer.getScore() + 15;
+                currentPlayer.setScore(currentPlayer.getScore() + 15);
                 break;
             case 7:
-                score = currentPlayer.getScore() + 20;
+                currentPlayer.setScore(currentPlayer.getScore() + 20);
                 break;
         }
-
-        currentPlayer.setScore(score);
     }
 
+    /**
+     * We discard the cards the player has used by adding the cards that doesn't match the route's color
+     * to a new list. Once we find the correct amount of discarded cards, we add the rest of the player's
+     * hand to the new list and set that as the player's new train card hand.
+     */
 	public void discardPlayerHand(Player player, GameBoard routes, String city1, String city2) {
-	    int matchedColor = 0;
+	    int matchedCard = 0;
 
 	    Route route = routes.getRoute(city1, city2);
         List<TrainCarCard> player_new_hand = new ArrayList<>();
-        String color = whichColor(player, routes, city1, city2);
+        String color = whichRouteColor(player, route);
 
         for(int i = 0; i < player.getTcHand().size(); i++){
-            if ( player.getTcHand().get(i).getColor().equals(color) ) {
-                matchedColor++;
-            } else if ( matchedColor <= route.getRouteLength() ) {
-                //While we haven't removed the number cards for the route length,
+            //Only increment if we haven't the right amount of cards
+            if ( player.getTcHand().get(i).getColor().equals(color) && matchedCard < route.getRouteLength() ) {
+                matchedCard++;
+            } else if ( matchedCard <= route.getRouteLength() ) {
+                //While we haven't "removed" the number cards for the route length,
                 //Add the cards that doesn't match the route's color
                 player_new_hand.add(player.getTcHand().get(i));
             } else {
-                //Once we find the amount of cards equal to the route's length, we add the rest of the cards
+                //Once we "removed" the amount of cards equal to the route's length, we add the rest of the cards
                 player_new_hand.add(player.getTcHand().get(i));
             }
         }
@@ -110,11 +115,14 @@ public class GameLogic {
         return p1;
 	}
 
-	public String whichColor(Player currentPlayer, GameBoard routes, String city1, String city2) {
+    /**
+     * This will allow the game to know which color to use in the instances that the route has 2 colors
+     * @return color The color of the route that matches the player's hand.
+     */
+	public String whichRouteColor(Player currentPlayer, Route route) {
         int color1 = 0, color2 = 0;
         String color = "";
         List<TrainCarCard> player_hand = currentPlayer.getTcHand();
-        Route route = routes.getRoute(city1,city2);
 
         if ( route != null ) {
             if ( route.getRouteColor2() != null ) {

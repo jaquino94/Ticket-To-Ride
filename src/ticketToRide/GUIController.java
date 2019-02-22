@@ -527,6 +527,146 @@ public class GUIController {
     private Rectangle YoungsTownToOilCity3;
 
     @FXML
+    private Rectangle BuffaloToRochesterYellow1;
+
+    @FXML
+    private Rectangle BuffaloToRochesterYellow2;
+
+    @FXML
+    private Rectangle BuffaloToRochesterYellow3;
+
+    @FXML
+    private Rectangle BuffaloToRochesterYellow4;
+
+    @FXML
+    private Rectangle BuffaloToRochesterYellow5;
+
+    @FXML
+    private Rectangle BuffaloToRochesterBlack1;
+
+    @FXML
+    private Rectangle BuffaloToRochesterBlack2;
+
+    @FXML
+    private Rectangle BuffaloToRochesterBlack3;
+
+    @FXML
+    private Rectangle BuffaloToRochesterBlack4;
+
+    @FXML
+    private Rectangle BuffaloToRochesterBlack5;
+
+    @FXML
+    private Rectangle WilliamsportToTowanda1;
+
+    @FXML
+    private Rectangle WilliamsportToTowanda2;
+
+    @FXML
+    private Rectangle YorkToHarrisburg;
+
+    @FXML
+    private Rectangle GettysburgToChambersburg;
+
+    @FXML
+    private Rectangle DuboisToWarren1;
+
+    @FXML
+    private Rectangle DuboisToWarren2;
+
+    @FXML
+    private Rectangle DuboisToWarren3;
+
+
+    @FXML
+    private Rectangle OilCityToErie3;
+
+    @FXML
+    private Rectangle OilCityToErie2;
+
+    @FXML
+    private Rectangle OilCityToErie1;
+
+
+    @FXML
+    private Rectangle ElmiraToSyracuse1;
+
+    @FXML
+    private Rectangle ElmiraToSyracuse2;
+
+    @FXML
+    private Rectangle ElmiraToSyracuse3;
+
+    @FXML
+    private Rectangle ElmiraToSyracuse4;
+
+    @FXML
+    private Rectangle AtlanticCityToNewYorkCityBlack1;
+
+    @FXML
+    private Rectangle AtlanticCityToNewYorkCityBlack2;
+
+    @FXML
+    private Rectangle AtlanticCityToNewYorkCityBlack3;
+
+    @FXML
+    private Rectangle AtlanticCityToNewYorkCityBlack4;
+
+    @FXML
+    private Rectangle AtlanticCityToNewYorkCityBlack5;
+
+    @FXML
+    private Rectangle AtlanticCityToNewYorkCityBlack6;
+
+    @FXML
+    private Rectangle AllentownToPhiladelphiaBlack1;
+
+    @FXML
+    private Rectangle AllentownToPhiladelphiaBlack2;
+
+    @FXML
+    private Rectangle AllentownToPhiladelphiaBlack3;
+
+    @FXML
+    private Rectangle AllentownToPhiladelphiaRed1;
+
+    @FXML
+    private Rectangle AllentownToPhiladelphiaRed2;
+
+    @FXML
+    private Rectangle AllentownToPhiladelphiaRed3;
+
+    @FXML
+    private Rectangle JohnstownToPittsburg1;
+
+    @FXML
+    private Rectangle JohnstownToPittsburg2;
+
+    @FXML
+    private Rectangle JohnstownToPittsburg3;
+
+    @FXML
+    private Rectangle JohnstownToPittsburg4;
+
+    @FXML
+    private Rectangle AtlanticCityToNewYorkCityWhite1;
+
+    @FXML
+    private Rectangle AtlanticCityToNewYorkCityWhite2;
+
+    @FXML
+    private Rectangle AtlanticCityToNewYorkCityWhite3;
+
+    @FXML
+    private Rectangle AtlanticCityToNewYorkCityWhite4;
+
+    @FXML
+    private Rectangle AtlanticCityToNewYorkCityWhite5;
+
+    @FXML
+    private Rectangle AtlanticCityToNewYorkCityWhite6;
+
+    @FXML
     private HBox trainCardView;
 
     @FXML
@@ -551,39 +691,29 @@ public class GUIController {
     void buttonPressed(ActionEvent event) {
         Button pressed = (Button)event.getSource();
 
-        if ( pressed.equals(route) ) {
-            if ( gameLogic.isValidMove(currentPlayer, board, city1, city2) ) {
+        if ( pressed.equals(route) || pressed.equals(trainCard) || pressed.equals(destinationCard) ) {
+            if ( pressed.equals(trainCard) ) {
+                currentPlayer.addTCCard(board.getTCCard());
+                trainCards.add(new ImageView()); //Adding a new ImageView to show the added Train Card
+            } else if ( pressed.equals(destinationCard) ) {
+                currentPlayer.addDCCard(board.getDCCard());
+            } else if ( gameLogic.isValidMove(currentPlayer, board, city1, city2) ) {
                 claimRoute(currentPlayer, city1, city2);
                 gameLogic.discardPlayerHand(currentPlayer, board, city1, city2);
+                showPlayerScore();
             }
 
-            showPlayerScore();
-            enableRadioButtons();
+            resetRadioButtons();
             resetCities();
 
             currentPlayer = gameLogic.getCurrentPlayer(currentPlayer, player1, player2);
-            currentTrainCards();
+            currentPlayerTrainCards();
             setTrainCardImages();
             showCurrentPlayerDestinationHand();
 
         } else if ( pressed.equals(quitButton) ) {
             System.exit(0);
 
-        } else {
-            if ( pressed.equals(trainCard) ) {
-               currentPlayer.addTCCard(board.getTCCard());
-               trainCards.add(new ImageView()); //Adding a new ImageView to show the added Train Card
-            } else if ( pressed.equals(destinationCard) ) {
-               currentPlayer.addDCCard(board.getDCCard());
-            }
-
-            enableRadioButtons();
-            resetCities();
-
-            currentPlayer = gameLogic.getCurrentPlayer(currentPlayer, player1, player2);
-            currentTrainCards();
-            setTrainCardImages();
-            showCurrentPlayerDestinationHand();
         }
     }
 
@@ -600,11 +730,11 @@ public class GUIController {
             if ( button.getId().equals(city1) ) {
                 city1 = "";
                 citiesPicked = false;
-                enableRadioButtons();
+                resetRadioButtons();
             } else if ( button.getId().equals(city2) ) {
                 city2 = "";
                 citiesPicked = false;
-                enableRadioButtons();
+                resetRadioButtons();
             } else if ( city1.equals("") ) {
                 city1 = button.getId();
                 citiesPicked = true;
@@ -628,7 +758,7 @@ public class GUIController {
     /**
      * Enabling the radio buttons again for the next player to choose cities.
      */
-    private void enableRadioButtons(){
+    private void resetRadioButtons(){
         if ( radioButtonsDisabled ) {
             for(String key : destinations.keySet()) {
                 destinations.get(key).setDisable(false);
@@ -671,9 +801,10 @@ public class GUIController {
 
         Route foundRoute = board.getRoute(city1, city2);
         List<String> citiesRoute = board.getKey(city1, city2);
+        String color;
 
         if ( foundRoute.getRouteColor2() != null ) {
-            String color = gameLogic.whichColor(currentPlayer, board, city1, city2);
+            color = gameLogic.whichRouteColor(currentPlayer, foundRoute);
 
             citiesRoute.add(color);
 
@@ -698,7 +829,7 @@ public class GUIController {
         builder.setLength(0);
         if ( currentPlayer.getDCHand() != null ) {
             for (int i = 0; i < currentPlayer.getDCHand().size(); i++) {
-                builder.append(currentPlayer.getDCHand().get(i) + " ");
+                builder.append(currentPlayer.getDCHand().get(i)).append(" ");
             }
         }
         playerHand.setText(builder.toString());
@@ -728,7 +859,7 @@ public class GUIController {
      * that is based on the player's train card hand.
      * This allows the program to show the correct amount of train cards in the GUI for the current player.
      */
-    private void currentTrainCards(){
+    private void currentPlayerTrainCards(){
         trainCards.clear();
         for(int i = 0; i < currentPlayer.getTcHand().size(); i++){
             trainCards.add(new ImageView());
@@ -901,5 +1032,25 @@ public class GUIController {
                                                                                 AlbanyToNewYorkBlue4, AlbanyToNewYorkBlue5, AlbanyToNewYorkBlue6)));
         routes.put(new ArrayList<>(Arrays.asList("Albany", "NewYork", "GREEN")), new ArrayList<>(Arrays.asList(AlbanyToNewYorkGreen1, AlbanyToNewYorkGreen2, AlbanyToNewYorkBlue3,
                                                                                     AlbanyToNewYorkGreen4, AlbanyToNewYorkGreen5, AlbanyToNewYorkGreen6)));
+        routes.put(new ArrayList<>(Arrays.asList("Buffalo", "Rochester", "YELLOW")), new ArrayList<>(Arrays.asList(BuffaloToRochesterYellow1, BuffaloToRochesterYellow2, BuffaloToRochesterYellow3,
+                                                                                        BuffaloToRochesterYellow4, BuffaloToRochesterYellow5)));
+        routes.put(new ArrayList<>(Arrays.asList("Buffalo", "Rochester", "BLACK")), new ArrayList<>(Arrays.asList(BuffaloToRochesterBlack1, BuffaloToRochesterBlack2, BuffaloToRochesterBlack3,
+                                                                                    BuffaloToRochesterBlack4, BuffaloToRochesterBlack5)));
+        routes.put(new ArrayList<>(Arrays.asList("Williamsport", "Towanda")), new ArrayList<>(Arrays.asList(WilliamsportToTowanda1, WilliamsportToTowanda2)));
+        routes.put(new ArrayList<>(Arrays.asList("York", "Harrisburg")), new ArrayList<>(Arrays.asList(YorkToHarrisburg)));
+        routes.put(new ArrayList<>(Arrays.asList("Gettysburg", "Chambersburg")), new ArrayList<>(Arrays.asList(GettysburgToChambersburg)));
+        routes.put(new ArrayList<>(Arrays.asList("Dubois", "Warren")), new ArrayList<>(Arrays.asList(DuboisToWarren1, DuboisToWarren2, DuboisToWarren3)));
+        routes.put(new ArrayList<>(Arrays.asList("OilCity", "Erie")), new ArrayList<>(Arrays.asList(OilCityToErie1, OilCityToErie2, OilCityToErie3)));
+        routes.put(new ArrayList<>(Arrays.asList("Elmira", "Syracuse")), new ArrayList<>(Arrays.asList(ElmiraToSyracuse1, ElmiraToSyracuse2, ElmiraToSyracuse3,
+                                                                            ElmiraToSyracuse4)));
+        routes.put(new ArrayList<>(Arrays.asList("AtlanticCity", "NewYorkCity", "BLACK")), new ArrayList<>(Arrays.asList(AtlanticCityToNewYorkCityBlack1, AtlanticCityToNewYorkCityBlack2, AtlanticCityToNewYorkCityBlack3,
+                                                                                        AtlanticCityToNewYorkCityBlack4, AtlanticCityToNewYorkCityBlack5, AtlanticCityToNewYorkCityBlack6)));
+        routes.put(new ArrayList<>(Arrays.asList("AtlanticCity", "NewYorkCity", "WHITE")), new ArrayList<>(Arrays.asList(AtlanticCityToNewYorkCityWhite1, AtlanticCityToNewYorkCityWhite2, AtlanticCityToNewYorkCityWhite3,
+                AtlanticCityToNewYorkCityWhite4, AtlanticCityToNewYorkCityWhite5, AtlanticCityToNewYorkCityWhite6)));
+        routes.put(new ArrayList<>(Arrays.asList("Allentown", "Philadelphia", "BLACK")), new ArrayList<>(Arrays.asList(AllentownToPhiladelphiaBlack1, AllentownToPhiladelphiaBlack2, AllentownToPhiladelphiaBlack3)));
+        routes.put(new ArrayList<>(Arrays.asList("Allentown", "Philadelphia", "RED")), new ArrayList<>(Arrays.asList(AllentownToPhiladelphiaRed1, AllentownToPhiladelphiaRed2, AllentownToPhiladelphiaRed3)));
+        routes.put(new ArrayList<>(Arrays.asList("Johnstown", "Pittsburg")), new ArrayList<>(Arrays.asList(JohnstownToPittsburg1, JohnstownToPittsburg2, JohnstownToPittsburg3,
+                                                                                JohnstownToPittsburg4)));
+        routes.put(new ArrayList<>(Arrays.asList("Harrisburg", "Reading")), new ArrayList<>(Arrays.asList(HarrisburgToReading1, HarrisburgToGettysburg2)));
     }
 }
